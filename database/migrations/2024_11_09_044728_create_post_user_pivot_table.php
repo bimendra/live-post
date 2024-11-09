@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
+use App\Models\Post;
 
 return new class extends Migration
 {
@@ -11,11 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->json('body')->nullable();
-            $table->timestamps();
+        Schema::create('post_user', function (Blueprint $table) {
+            $table->foreignIdFor(User::class)->index();
+            $table->foreignIdFor(Post::class)->index();
+            $table->primary(['post_id', 'user_id']);
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('post_user');
     }
 };
